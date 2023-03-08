@@ -1,6 +1,6 @@
 # zero2prod
 
-## Cargo tips
+## Cargo ans Rus tips
 
 - We can speed up build time via changer the linker, in the project.
 
@@ -16,6 +16,9 @@
   ```
 
   </ul>
+
+- A binary proj it's different than a bin and lib project, since that way we can share code betweeen binaries using lib folder. Now we can use `use zero2prod::somthing`
+- One lib file, multiple binaries, `[[bin]]` it's an array in TOML format since we can declare multiple binaries.
 
 ## TODO
 
@@ -83,6 +86,8 @@ We need to make main an async function, but the main needs to be syncronous, so 
 
 `async` is for value that needs to be polled to confirm its existance.
 
+We can run taks in background mode, so it will concurrent with any other task and futures. with `tokio::spawn`
+
 ## CI - Continuos Integration
 
 Using GitHub Actions
@@ -92,3 +97,24 @@ Using GitHub Actions
 3. Lintin `clippy`
 4. Formatting `rustfmt`
 5. Security Vulnerabilities `cargo-audit`
+
+## Integration Tests
+
+Integration Test is testing the API or any service/micro/program the same exact way an user would. In this case it'll be via HTTP Request since we are creating and API. **Black Box Testing** since we only pass input and expect output, _not testing any internals._
+
+<ul>
+
+### Caveats of Testing in Rust _Where to test_
+
+We use the macro `#[cfg(test)]` for any test
+
+1. Embedded Tests _in the same file as your code_
+
+   Test in a folder or Doc, have a separate binary.
+
+   Embedded tests visibilty has access to all struct, fn without the need for it to be `pub`
+
+2. External Test Folder
+   Ideal for integration testing since it generates a different binary
+3. Doc Test
+</ul>
