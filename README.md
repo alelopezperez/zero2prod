@@ -118,3 +118,31 @@ We use the macro `#[cfg(test)]` for any test
    Ideal for integration testing since it generates a different binary
 3. Doc Test
 </ul>
+
+### Table Driven Development
+
+Instead of testing each bad possible input for we can use an array of kown incorrect input to test if we get the desired **400** status code.
+
+```
+let test_cases = vec![
+        ("name=le%20guin", "missing the email"),
+        ("email=ursula_le_guin%40gmail.com", "missing the name"),
+        ("", "missing both name and email"),
+    ];
+for (invalid_body, error_message) in test_cases {
+        let response = client
+            .post(&format!("{}/subscriptions", &app_address))
+            .header("Content-Type", "application/x-www-form-urlencoded")
+            .body(invalid_body)
+            .send()
+            .await
+            .expect("Failed to exec request");
+
+        assert_eq!(
+            400,
+            response.status().as_u16(),
+            "The API did not fail with 400 Bad Request when the payload was {}.",
+            error_message
+        )
+    }
+```
