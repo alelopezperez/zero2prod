@@ -1,6 +1,6 @@
 # zero2prod
 
-## Cargo ans Rus tips
+## Cargo ans Rust tips
 
 - We can speed up build time via changer the linker, in the project.
 
@@ -19,6 +19,11 @@
 
 - A binary proj it's different than a bin and lib project, since that way we can share code betweeen binaries using lib folder. Now we can use `use zero2prod::somthing`
 - One lib file, multiple binaries, `[[bin]]` it's an array in TOML format since we can declare multiple binaries.
+
+- `use crate` vs `use zero2prod`
+
+  - `use crate` when inside a lib
+  - `use zero2prod` when using main
 
 ## TODO
 
@@ -74,6 +79,30 @@ The Responder `trait` is return like an HttpResponse
 
 </ul>
 
+#### **Serde**
+
+SerDe: Serialize and Deserialize data structures in Rust generically. NO JSON(needs serde_json), serde defines a set of interfaces or, as they themselves call it, a data model
+
+```
+#[derive(serde::Deserialize)]
+pub struct FormData {
+email: String,
+name: String,
+}
+// Let's start simple: we always return a 200 OK
+async fn subscribe(_form: web::Form<FormData>) -> HttpResponse {
+HttpResponse::Ok().finish()
+}
+```
+
+- before calling subscribe actix-web invokes the from_request method for all subscribe’s
+  input arguments: in our case, Form::from_request;
+- Form::from_request tries to deserialise the body into FormData according to the rules of URL-
+  encoding leveraging serde_urlencoded and the Deserialize implementation of FormData,
+  automatically generated for us by #[derive(serde::Deserialize)];
+- if Form::from_request fails, a 400 BAD REQUEST is returned to the caller. If it succeeds,
+  subscribe is invoked and we return a 200 OK
+
 #### **Runtime - Tokio**
 
 We need to make main an async function, but the main needs to be syncronous, so we use the macro `#[toikio:main]` because who is in charge to call poll on it? if it's the main function.
@@ -87,6 +116,12 @@ We need to make main an async function, but the main needs to be syncronous, so 
 `async` is for value that needs to be polled to confirm its existance.
 
 We can run taks in background mode, so it will concurrent with any other task and futures. with `tokio::spawn`
+
+### The Database (Postgres) - SQLX
+
+Using `sqlx-cli` we can create our migrations from our db schema.
+
+Postgres valid connections string `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`
 
 ## CI - Continuos Integration
 
