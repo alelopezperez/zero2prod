@@ -45,6 +45,27 @@ The default LSP for rust.
 
 ### Actix-Web
 
+### App Data
+
+Actix works by default as statless, we can state to our with App Data, so the server need to return an app data struct so for DB connection it will be multiple instance of app data for each core. Since PG connection does not clone, we will use ARC for safe and atomic connection to the DB.
+
+```
+pub fn run(listener: TcpListener, connection: PgConnection) -> Result<Server, std::io::Error> {
+    let connection = web::Data::new(connection);
+    let server = HttpServer::new(move || {
+        App::new()
+            .route("/health_check", web::get().to(health_check))
+            .route("/subscriptions", web::post().to(subscribe))
+            .app_data(connection.clone())
+    })
+    .listen(listener)?
+    .run();
+
+    Ok(server)
+}
+
+```
+
 #### **Server - HttpServer**
 
 Handles all TCP Port, numbers and limits of concurrent connections, TLS, etc.
@@ -181,3 +202,7 @@ for (invalid_body, error_message) in test_cases {
         )
     }
 ```
+
+## SQLX - Rust DB ORM Crate
+
+- `sqlx::query!()` macro; it takes a sql command e.g "SELECT \* from example..." and at compile time checks the connection, and checks sql correctness and existance; and also returns a anonymous record type of the fetch (i.e saved.email for the email column)
