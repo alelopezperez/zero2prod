@@ -1,5 +1,7 @@
 # zero2prod
 
+## Curr Page: 69
+
 ## Cargo ans Rust tips
 
 - We can speed up build time via changer the linker, in the project.
