@@ -1,6 +1,6 @@
 # zero2prod
 
-## Curr Page: 69
+## Curr Page: Finished Chapter 3
 
 ## Cargo ans Rust tips
 
