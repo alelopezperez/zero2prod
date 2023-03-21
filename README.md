@@ -47,7 +47,12 @@ The default LSP for rust.
 
 ### Actix-Web
 
-### App Data
+### Loggin
+
+- Using actix logger middleware we can use the wrap
+- env_logger crate for log to the terminal
+
+#### App Data
 
 Actix works by default as statless, we can state to our with App Data, so the server need to return an app data struct so for DB connection it will be multiple instance of app data for each core. Since PG connection does not clone, we will use ARC for safe and atomic connection to the DB.
 
