@@ -1,6 +1,6 @@
 # zero2prod
 
-## Curr Page: Finished Chapter 3
+## Curr Page: 88
 
 ## Cargo ans Rust tips
 
@@ -51,6 +51,8 @@ The default LSP for rust.
 
 - Using actix logger middleware we can use the wrap
 - env_logger crate for log to the terminal
+- #### Good Logging Practices
+  - Have a request id associated the the logs to correalte or id which error pertains to which request
 
 #### App Data
 
