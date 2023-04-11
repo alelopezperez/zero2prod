@@ -1,6 +1,6 @@
 # zero2prod
 
-## Curr Page: 88
+## Curr Page: 109
 
 ## Cargo ans Rust tips
 
